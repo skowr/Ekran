@@ -1,13 +1,9 @@
-
-
-
 #include <stdint.h>
 #include <avr/io.h>
 #include <util/delay.h>
 #include <Arduino.h>
 
 #include "config.h"
-
 
 
 uint32_t c;
@@ -55,15 +51,39 @@ unsigned int hexToUIntLastFourBits(const String& hexString) {
 
 }
 
-/*
-    std::string hexString = "FF"; // Example hex string    
-    unsigned int result = hexToUIntLastFourBits(hexString);    
-    std::cout << "Converted value with last 4 bits is: " << result << "\n";
-    return 0;
 
+unsigned char hexToBinary(char hex) {
+  if (isdigit(hex))
+    return hex - '0';
+  else
+    return hex - 'A' + 10;
 }
 
+
+void hexStringToBooleanArray(const char* hexString, bool booleanArray[]) {
+  for (int i = 0; i < strlen(hexString); ++i) {
+    unsigned char byte1 = hexToBinary(hexString[i] >> 4);
+    unsigned char byte2 = hexToBinary(hexString[i] & 0x0F);
+    booleanArray[i] = (byte1 > 0 && byte2 > 0) ? false : true; // if any bit is set, Boolean value is false
+  }
+}
+
+
+/*
+const char* hexString = "ABCDEFG"; // replace with your hex string
+bool booleanArray[strlen(hexString)];
+
+hexStringToBooleanArray(hexString, booleanArray);
+
+for (int i = 0; i < strlen(hexString); ++i) {
+  Serial.print(booleanArray[i] ? "1" : "0"); // print the Boolean values as '0' or '1' to the 
+serial monitor
+}
+
+
+
 */
+
 
 void loop() {
   jammer();
