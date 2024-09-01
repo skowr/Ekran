@@ -14,10 +14,39 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
 
-  c = 0;
-  b = true;
+  // Jammer code
+  // c = 0;
+  // b = true;
+
+  testCalc();
+
 }
 
+
+void testCalc() {
+
+  Serial.begin(9600);
+  Serial.println("\n\nStart");
+  
+  
+  // char* str = "FFF";
+  // bool bol[strlen(str)*4];
+
+  bool bol[strlen(sigUp)*4];
+
+  hexStringToBooleanArray(sigUp, bol);
+
+  for (int i =0; i< sizeof(bol); i++)
+  {
+    if (bol[i])
+      Serial.print("1");
+    else
+      Serial.print("0");
+
+  }
+
+
+}
 
 void jammer() {
   digitalWrite(FS1000A_DATA_PIN, LOW);
@@ -51,7 +80,6 @@ unsigned int hexToUIntLastFourBits(const String& hexString) {
 
 }
 
-
 unsigned char hexToBinary(char hex) {
   if (isdigit(hex))
     return hex - '0';
@@ -59,33 +87,20 @@ unsigned char hexToBinary(char hex) {
     return hex - 'A' + 10;
 }
 
-
 void hexStringToBooleanArray(const char* hexString, bool booleanArray[]) {
-  for (int i = 0; i < strlen(hexString); ++i) {
-    unsigned char byte1 = hexToBinary(hexString[i] >> 4);
-    unsigned char byte2 = hexToBinary(hexString[i] & 0x0F);
-    booleanArray[i] = (byte1 > 0 && byte2 > 0) ? false : true; // if any bit is set, Boolean value is false
+  for (int i = 0; i < strlen(hexString); i++){
+    // Serial.println(hexString[i], DEC);
+    unsigned char byte = hexToBinary(hexString[i]);
+    // Serial.println(byte, DEC);
+    for (int j = 1; j <= 4; j++){
+      booleanArray[i*4+4-j] = ((byte & 1) == 1) ? true : false;
+      byte >>= 1;
+    }
   }
 }
 
 
-/*
-const char* hexString = "ABCDEFG"; // replace with your hex string
-bool booleanArray[strlen(hexString)];
-
-hexStringToBooleanArray(hexString, booleanArray);
-
-for (int i = 0; i < strlen(hexString); ++i) {
-  Serial.print(booleanArray[i] ? "1" : "0"); // print the Boolean values as '0' or '1' to the 
-serial monitor
-}
-
-
-
-*/
-
-
 void loop() {
-  jammer();
+  // jammer();
 
 }
