@@ -14,6 +14,8 @@ void setup() {
 
   pinMode(FS1000A_DATA_PIN, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+  // pinMode(DC5V_ANALOG_PIN, INPUT);
+
   digitalWrite(LED_BUILTIN, HIGH);
 
   bool bolUp[strlen(sigUp)*4];
@@ -24,12 +26,19 @@ void setup() {
   hexStringToBooleanArray(sigDown, bolDown);
   hexStringToBooleanArray(sigPause, bolPause);
 
+  Serial.begin(9600); 
+
+  // Serial.print("Hello World!");
+
+
+/*
+
   for (int i=0; i<PULSE_REPEATS; i++ ){
     trSend(bolDown, sizeof(bolDown));
     trWait(sizeof(bolPause));
 
   }
-
+*/
 }
 
 
@@ -128,5 +137,10 @@ void trWait(int size)
 
 void loop() {
   // No loop now.
+  uint16_t v;
 
+  v = analogRead(DC5V_ANALOG_PIN);
+
+  Serial.println(v);
+  delay(500);
 }
