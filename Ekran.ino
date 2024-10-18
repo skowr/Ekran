@@ -3,7 +3,35 @@
 #include <util/delay.h>
 #include <Arduino.h>
 
+// *** I keep all the below contents in external secret file (config.h) file and not share it ***
 #include "config.h"
+
+// #define  FS1000A_DATA_PIN 11 // pin for FS1000A transmitter
+// #define  DC5V_ANALOG_PIN 0 // pin for voltage read
+
+// #define  JAM_PULSE 2000 // jammer pulse
+// #define  JAM_BLINK 100000 // jammer data
+// #define  SIGNAL_BLINK 50 // blink signal
+
+// #define  PULSE_BIT 186 // microseconds
+// #define  PULSE_REPEATS 60 // how many times the pulse is being pushed
+
+// #define  VOLT_TRESHOLD 500 // treshold to trigger action
+// #define  VOLT_CHANGE_TIME 1000 // miliseconds time of the voltage change to take action
+// #define  LOOP_DELAY 500 // probing time for the voltage miliseconds
+
+// // bool APP_DEBUG = true;
+// bool APP_DEBUG = false; // should we send debug information on serial port
+// bool BLINK_OPERATION = false; // should the Arduino led blink on operation
+
+// char *sigUp =    "<PUT YOUR OWN SIGNAL>"; // Signal for going up
+// char *sigDown =  "<PUT YOUR OWN SIGNAL>"; // Signal for going down
+// char *sigPause = "<PUT YOUR OWN SIGNAL>"; // Pause signal
+
+// bool bolUp[25*4];
+// bool bolDown[25*4];
+// bool bolPause[8*4];
+
 
 
 // Test data
@@ -20,8 +48,6 @@ enum VoltStats {
 VoltStats voltStat;
 uint16_t voltChangeCounter;
 bool blink = false;
-
-
 
 void setup() {                
   uint16_t v;
@@ -74,6 +100,7 @@ void testCalc() {
   }
 }
 
+// Garbage jammer
 void jammer() {
   digitalWrite(FS1000A_DATA_PIN, LOW);
   delayMicroseconds(JAM_PULSE);
@@ -97,7 +124,7 @@ void jammer() {
 
 }
 
-// Helper functions
+// Helper functions HEX -> BIN
 unsigned char hexToBinary(char hex) {
   if (isdigit(hex))
     return hex - '0';
@@ -137,6 +164,7 @@ void trWait(int size) {
     delayMicroseconds(PULSE_BIT);
 }
 
+// Blink signal function
 void signalblink() {
   for (int i = 0; i<5; i++) {
     digitalWrite(LED_BUILTIN, HIGH);
@@ -210,6 +238,4 @@ void loop() {
     Serial.print(v);
     Serial.println();
   }
-  
-
 }
